@@ -146,6 +146,24 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCheckTextSearchFiled()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'SKIP')]"),
+                "Cannot find 'SKIP' on onboarding",
+                5
+        );
+
+        assertElementHasText(
+                By.xpath( "//*[contains(@text, 'Search Wikipedia')]"),
+                "Search Wikipedia",
+                "We see unexpected text in search filed",
+                5
+        );
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -190,14 +208,18 @@ public class FirstTest {
         return element;
     }
 
-    private WebElement assertElementHasText(By by, String value, String error_message, long timeoutInSeconds)
+   private WebElement assertElementHasText(By by, String value, String error_message, long timeoutInSeconds)
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
-        element.sendKeys(value);
+        String text = element.getAttribute("text");
+
+        Assert.assertEquals(
+                error_message,
+                value,
+                text
+        );
         return element;
     }
-
-
 
 
 }
