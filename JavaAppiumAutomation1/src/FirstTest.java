@@ -164,6 +164,59 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testCheckingSearch()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'SKIP')]"),
+                "Cannot find 'SKIP' on onboarding",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id( "org.wikipedia:id/search_container"),
+                "Cannot find 'search_container' on main screen",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath( "//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/page_list_item_description"),
+                "Cannot find 'index=2'",
+                15
+        );
+
+        waitForElementAndClick(
+                By.id( "org.wikipedia:id/search_close_btn"),
+                "Cannot find 'Close button'",
+                5
+        );
+
+        WebElement empty_search = waitForElementPresent(
+                By.id("org.wikipedia:id/search_empty_message"),
+                "We see not empty search",
+                5
+        );
+
+
+        String search_empty_image = empty_search.getAttribute("text");
+
+        Assert.assertEquals(
+                "We see not empty search",
+                "Search Wikipedia in more languages",
+                search_empty_image
+        );
+
+
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -220,6 +273,8 @@ public class FirstTest {
         );
         return element;
     }
+
+
 
 
 }
