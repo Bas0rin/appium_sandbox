@@ -185,10 +185,10 @@ public class FirstTest {
                 "Cannot find search input",
                 5
         );
-
+        //Найдены статьи
         waitForElementPresent(
                 By.id("org.wikipedia:id/page_list_item_description"),
-                "Cannot find 'index=2'",
+                "Cannot find 'page_list_item_description'",
                 15
         );
 
@@ -214,6 +214,12 @@ public class FirstTest {
         );
 
 
+
+    }
+
+    @Test
+    public void testWordsInSearchResult()
+    {
 
     }
 
