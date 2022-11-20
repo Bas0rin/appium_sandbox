@@ -1,4 +1,5 @@
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,6 +12,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FirstTest {
 
@@ -144,6 +148,7 @@ public class FirstTest {
                 "Java (programming language)",
                 article_title
         );
+
     }
 
     @Test
@@ -220,6 +225,52 @@ public class FirstTest {
     @Test
     public void testWordsInSearchResult()
     {
+        //Фраза для поиска
+        String search_value = "Java";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'SKIP')]"),
+                "Cannot find 'SKIP' on onboarding",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath( "//*[contains(@text, 'Search Wikipedia')]"),
+                search_value,
+                "Cannot find search input",
+                5
+        );
+
+        //Собираем в массив все элементы по id.
+        List <WebElement> list_search_title = driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+
+        //Передаем размер массива в цикл
+        for(int i = 0; i<list_search_title.size(); i++) {
+
+            //Получаем из массива атрибут text
+            String text_search_title = list_search_title.get(i).getAttribute("text");
+            //Создаем паттерн по которому будем матчить полученный текст
+            Pattern pattern = Pattern.compile(".*" + search_value + ".*");
+            //Матчим полученный текста по паттерну
+            Matcher matcher = pattern.matcher(text_search_title);
+            //Если получили false передаем сообщение и прерываем цикл
+            if(matcher.find() == false)
+            {
+                System.out.println("Not all search result contain " + search_value);
+                break;
+            }
+
+
+        }
+        //Если цикл завершился успешно выводим сообщение
+        System.out.println("All search result contain " + search_value);
+
+
+
 
     }
 
