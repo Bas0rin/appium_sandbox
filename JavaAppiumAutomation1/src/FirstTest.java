@@ -690,9 +690,43 @@ public class FirstTest {
                 15
         );
 
+    }
 
+    @Test
+    public void assertElementPresent()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'SKIP')]"),
+                "Cannot find 'SKIP' on onboarding",
+                5
+        );
 
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
 
+        String search_line = "Java";
+        waitForElementAndSendKeys(
+                By.xpath( "//*[contains(@text, 'Search Wikipedia')]"),
+                search_line,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java (programming language)']"),
+                "Cannot find 'Java (programming language)' article in search",
+                5
+        );
+
+        //Ставим таймаут 0, чтобы код проверял элемент и не дожидался появления title
+        waitForElementPresent(
+                By.xpath("//*[@class='android.view.View']//*[@text='Java (programming language)']"),
+                "Cannot find title 'Java (programming language)'",
+                0
+        );
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
