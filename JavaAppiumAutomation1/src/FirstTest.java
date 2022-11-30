@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -525,6 +526,7 @@ public class FirstTest {
         );
 
 
+
     }
 
     @Test
@@ -564,6 +566,134 @@ public class FirstTest {
                 15
         );
     };
+
+     @Test
+    public void testSearchAndSaveTwoArticles()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'SKIP')]"),
+                "Cannot find 'SKIP' on onboarding",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String search_line = "Java";
+        waitForElementAndSendKeys(
+                By.xpath( "//*[contains(@text, 'Search Wikipedia')]"),
+                search_line,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java (programming language)']"),
+                "Cannot find 'Java (programming language)' article in search",
+                5
+        );
+
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_save'][@text='Save']"),
+                "Cannot find button 'Save' on tabbar",
+                5
+        );
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/snackbar_action'][@text='ADD TO LIST']"),
+                "Cannot find text 'ADD TO LIST",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/text_input']"),
+                "Cannot find 'Save input",
+                5
+        );
+
+        String name_list = "Java articles list";
+        waitForElementAndSendKeys(
+                By.xpath( "//*[@resource-id='org.wikipedia:id/text_input']"),
+                name_list,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='android:id/button1'][@text='OK']"),
+                "Cannot find button with text 'OK",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath( "//*[contains(@class, 'android.widget.ImageButton')]"),
+                "Cannot find 'android.widget.ImageButton' back button to main",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java version history']"),
+                "Cannot find 'Java version history' article in search",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_save'][@text='Save']"),
+                "Cannot find button fot save article",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/snackbar_action'][@text='ADD TO LIST']"),
+                "Cannot find text 'ADD TO LIST",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/item_title'][@text='"+ name_list +"']"),
+                "Cannot find text 'ADD TO LIST",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/snackbar_action'][@text='VIEW LIST']"),
+                "Cannot find text 'VIEW LIST'",
+                5
+        );
+
+        swipeElementToLeft(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Cannot find saved article"
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java version history']"),
+                "Cannot find 'Java version history' article",
+                15
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Java version history']"),
+                "Cannot find articles after run background ",
+                15
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@class='android.view.ViewGroup']//*[@text='Java version history']"),
+                "Cannot find title 'Java version history' in saved article",
+                15
+        );
+
+
+
+
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
